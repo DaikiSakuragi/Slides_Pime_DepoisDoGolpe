@@ -58,31 +58,7 @@
     .overlay-svg { z-index: 2; }
     .outline-svg { z-index: 4; }
 
-    .glass{
-      position:absolute; z-index:3; pointer-events:none;
 
-      /* sem blur: o vídeo continua nítido, só ganha brilho e cor */
-      -webkit-backdrop-filter:saturate(1.35) contrast(1.08) brightness(1.1);
-      backdrop-filter:saturate(1.35) contrast(1.08) brightness(1.1);
-
-      background:
-        /* reflexo forte diagonal, como luz batendo no vidro */
-        linear-gradient(115deg,
-          rgba(255,255,255,.34) 0%,
-          rgba(255,255,255,.10) 22%,
-          rgba(255,255,255,0)   34%,
-          rgba(255,255,255,.18) 48%,
-          rgba(255,255,255,0)   60%,
-          rgba(255,255,255,.22) 100%),
-        /* tinta avermelhada bem leve */
-        linear-gradient(160deg,
-          rgba(214,70,110,.10) 0%,
-          rgba(190,40,80,.06) 55%,
-          rgba(225,90,120,.10) 100%);
-
-      -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
-      -webkit-mask-size:contain; mask-size:contain;
-    }
 
     .top-bar {
       width: 100%;
