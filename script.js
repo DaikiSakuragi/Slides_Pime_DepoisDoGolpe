@@ -236,7 +236,6 @@ let audioCtx;
 
 const cssTiros = document.createElement('style');
 cssTiros.textContent = `
-  #s3flash{position:fixed;inset:0;background:#fff;opacity:0;z-index:60;pointer-events:none}
   .s3hole{position:absolute;width:280px;height:280px;margin:-140px 0 0 -140px;z-index:30;pointer-events:none}
   .s3hole svg{width:100%;height:100%;overflow:visible}
   #s3shards{position:absolute;inset:0;z-index:25;overflow:hidden;pointer-events:none}
