@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DEPOIS DO GOLPE</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+
+  </style>
+</head>
+<body>
+
+  <div class="vignette"></div>
+
+  <div id="slidenav">
+    <button id="slPrev" aria-label="Slide anterior">‹</button>
+    <button id="slNext" aria-label="Próximo slide">›</button>
+  </div>
+ 
+
+  <div id="stage">
+
+<!-- ================= SLIDE 3 (IDEIA - CARROSSEL) ================= -->
+    <section class="slide" id="slide3">
+      <h2>IDEIA</h2>
+
+      <div class="carousel-container">
+        <div class="carousel-track" id="carouselTrack">
+          
+          <!-- Card 1 -->
+          <article class="carousel-card">
+            <span class="label">Documento 01</span>
+            <div class="card-photo" style="background-image:url('fotos/Ideia/card1.jpg')"></div>
+            <p class="card-text">
+              Enquanto a América Latina tentava cicatrizar as feridas dos violentos golpes militares clássicos da Guerra Fria — como o de <strong>1964 no Brasil</strong>, o de <strong>1973 no Chile</strong> e o de <strong>1976 na Argentina</strong> —, o Peru desenhava uma ruptura institucional inédita operada por vias civis.            </p>
+            <h3 class="card-title">Contexto Regional</h3>
+          </article>
+
+          <!-- Card 2 -->
+          <article class="carousel-card">
+            <span class="label">Documento 02</span>
+            <div class="card-photo" style="background-image:url('fotos/Ideia/card2.jpg')"></div>
+            <p class="card-text">
+              O avanço terrorista e os massacres promovidos pelas guerrilhas radicais do Sendero Luminoso (maoísta) e do MRTA (marxista-leninista) espalharam o pânico social, criando o pretexto de segurança perfeito para a centralização do poder.            </p>
+            <h3 class="card-title">Ascensão das Guerrilhas</h3>
+          </article>
+
+          <!-- Card 3 -->
+          <article class="carousel-card">
+            <span class="label">Documento 03</span>
+            <div class="card-photo" style="background-image:url('fotos/Ideia/card3.jpg')"></div>
+            <p class="card-text">
+              Castigado por uma hiperinflação sufocante de 7.000%, escassez crônica e o cerco armado às cidades, o colapso total do primeiro governo García deixou o país quebrado e desiludido com a política tradicional.            </p>
+            <h3 class="card-title">Crise de Alan García</h3>
+          </article>
+
+          <!-- Card 4 -->
+          <article class="carousel-card">
+            <span class="label">Documento 04</span>
+            <div class="card-photo" style="background-image:url('fotos/Ideia/card4.jpg')"></div>
+            <p class="card-text">
+              Apresentando-se como um outsider pragmático, o desconhecido Alberto Fujimori capturou o voto popular e derrotou o favoritismo do escritor Mario Vargas Llosa, cujo plano liberal assustava os mais pobres com a promessa de um "choque" econômico imediato.            </p>
+            <h3 class="card-title">Eleição de Fujimori</h3>
+          </article>
+
+          <!-- Card 5 -->
+          <article class="carousel-card">
+            <span class="label">Documento 05</span>
+            <div class="card-photo" style="background-image:url('fotos/Ideia/card5.jpg')"></div>
+            <p class="card-text">
+              Após aplicar ele mesmo as duras reformas neoliberais que havia negado em campanha, Fujimori colocou tanques nas ruas em 1992, dissolveu o Congresso e interveio no Judiciário com o apoio irrestrito das Forças Armadas.            </p>
+            <h3 class="card-title">Fujishock e Autogolpe</h3>
+          </article>
+
+          <!-- Card 6 -->
+          <article class="carousel-card">
+            <span class="label">Documento 06</span>
+            <div class="card-photo" style="background-image:url('fotos/Ideia/card6.jpg')"></div>
+            <p class="card-text">
+              Legitimado pelo medo coletivo após o atentado de Tarata — onde carros-bomba do Sendero Luminoso devastaram o centro financeiro de Lima e mataram 25 civis —, o regime capturou as lideranças guerrilheiras, mas acobertou crimes de Estado e massacres brutais cometidos pelo esquadrão da morte oficial (Grupo Colina), como em La Cantuta, onde um professor e nove estudantes universitários foram sequestrados, executados e enterrados clandestinamente.
+            <h3 class="card-title">Tarata e Cantuta</h3>
+          </article>
+
+          <!-- Card 7 -->
+          <article class="carousel-card">
+            <span class="label">Documento 07</span>
+            <div class="card-photo" style="background-image:url('fotos/Ideia/card7.jpg')"></div>
+            <p class="card-text">
+              O império fujimorista ruiu no ano 2000 após o vazamento dos Vladivídeos — que escancararam a compra massiva de políticos e da imprensa pela inteligência estatal —, culminando na fuga do presidente e em sua histórica renúncia enviada por fax.
+            </p>
+            <h3 class="card-title">Queda do Regime</h3>
+          </article>
+
+        </div>
+      </div>
+
+      <!-- Navegação Inferior -->
+      <div class="carousel-controls">
+        <button class="nav-btn" id="prevBtn" type="button" aria-label="Anterior">&lt;</button>
+        <div class="bars-container" id="barsContainer"></div>
+        <button class="nav-btn" id="nextBtn" type="button" aria-label="Próximo">&gt;</button>
+      </div>
+    </section>
+
+    <!-- ================= SLIDE 2 ================= -->
+    <section class="slide" id="slide2">
+      <h2>Integrantes e Funções</h2>
+
+      <div class="grid">
+        <!-- Troque as imagens em fotos/Integrantes/ pelos arquivos reais de cada pessoa -->
+        <article class="card" style="--i:0">
+          <span class="label">Ficha técnica</span>
+          <div class="photo" style="background-image:url('fotos/Integrantes/Ana.JPG')"></div>
+          <h3 class="nome">Ana Clara</h3>
+          <p class="funcao">Direção de fotografia</p>
+        </article>
+
+        <article class="card" style="--i:1">
+          <span class="label">Ficha técnica</span>
+          <div class="photo" style="background-image:url('fotos/Integrantes/Daiki.JPG')"></div>
+          <h3 class="nome">Daiki Sakuragi</h3>
+          <p class="funcao">Produção / Roteiro / Ass. Direção</p>
+        </article>
+
+        <article class="card" style="--i:2">
+          <span class="label">Ficha técnica</span>
+          <div class="photo" style="background-image:url('fotos/Integrantes/Eddie.JPG')"></div>
+          <h3 class="nome">Eddie Kaiser</h3>
+          <p class="funcao">Direção de arte</p>
+        </article>
+
+        <article class="card" style="--i:3">
+          <span class="label">Ficha técnica</span>
+          <div class="photo" style="background-image:url('fotos/Integrantes/Gabriel.JPG')"></div>
+          <h3 class="nome">Gabriel Campos</h3>
+          <p class="funcao">Ass. Produção / Som</p>
+        </article>
+
+        <article class="card" style="--i:4">
+          <span class="label">Ficha técnica</span>
+          <div class="photo" style="background-image:url('fotos/Integrantes/Helo.JPG')"></div>
+          <h3 class="nome">Heloisa de Picoli</h3>
+          <p class="funcao">Ass. de fotografia / Preparação de elenco</p>
+        </article>
+
+        <article class="card" style="--i:5">
+          <span class="label">Ficha técnica</span>
+          <div class="photo" style="background-image:url('fotos/Integrantes/Jean.JPG')"></div>
+          <h3 class="nome">Jean Morais</h3>
+          <p class="funcao">Ass. de arte</p>
+        </article>
+
+        <article class="card" style="--i:6">
+          <span class="label">Ficha técnica</span>
+          <div class="photo" style="background-image:url('fotos/Integrantes/Pedro.JPG')"></div>
+          <h3 class="nome">Pedro Pereira</h3>
+          <p class="funcao">Roteiro / Edição / Som</p>
+        </article>
+
+        <article class="card" style="--i:7">
+          <span class="label">Ficha técnica</span>
+          <div class="photo" style="background-image:url('fotos/Integrantes/Santiago.JPG')"></div>
+          <h3 class="nome">Santiago Montoya</h3>
+          <p class="funcao">Direção / Roteiro / Produção</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ================= SLIDE 1 (CAPA) ================= -->
+    <section class="slide" id="slide1">
+
+      <video class="bg-video" id="myVideo" autoplay loop muted playsinline>
+        <source src="videos/Video_BG.mp4" type="video/mp4">
+      </video>
+
+      <svg class="overlay-svg" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <g id="silhouettes">
+            <image id="imgJuan"    href="fotos/Juan_Glass.png" />
+            <image id="imgErnesto" href="fotos/Ernesto_Glass.png" />
+          </g>
+
+          <filter id="toBlack" color-interpolation-filters="sRGB">
+            <feColorMatrix type="matrix"
+              values="0 0 0 0 0
+                      0 0 0 0 0
+                      0 0 0 0 0
+                      0 0 0 1 0" />
+          </filter>
+
+          <mask id="hole-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="100%" height="100%">
+            <rect width="100%" height="100%" fill="white" />
+            <use href="#silhouettes" filter="url(#toBlack)" />
+          </mask>
+
+          <radialGradient id="redGrad" cx="50%" cy="50%" r="55%">
+            <stop offset="0%"   stop-color="rgb(95,0,0)" stop-opacity="0.97" />
+            <stop offset="100%" stop-color="rgb(6,5,4)"  stop-opacity="1" />
+          </radialGradient>
+        </defs>
+
+        <rect width="100%" height="100%" fill="url(#redGrad)" mask="url(#hole-mask)" />
+      </svg>
+
+      <div class="glass" id="glassJuan"></div>
+      <div class="glass" id="glassErnesto"></div>
+
+      <svg class="outline-svg" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <filter id="glassEdge" filterUnits="userSpaceOnUse" x="0" y="0" width="100%" height="100%"
+                  color-interpolation-filters="sRGB">
+            <feMorphology in="SourceAlpha" operator="erode" radius="2" result="eroded" />
+            <feComposite in="SourceAlpha" in2="eroded" operator="out" result="ring" />
+            <feFlood flood-color="#ffffff" flood-opacity="0.75" result="white" />
+            <feComposite in="white" in2="ring" operator="in" result="edge" />
+            <feGaussianBlur in="edge" stdDeviation="2.5" result="halo" />
+            <feMerge>
+              <feMergeNode in="halo" />
+              <feMergeNode in="edge" />
+            </feMerge>
+          </filter>
+        </defs>
+
+        <use href="#silhouettes" filter="url(#glassEdge)" />
+      </svg>
+
+      <div class="top-bar">
+        <span>CENTRO UNIVERSITÁRIO BELAS ARTES</span>
+        <span>PIME 2° SEMESTRE</span>
+      </div>
+
+      <main class="slide-capa">
+        <h1 class="titulo-capa">DEPOIS DO GOLPE</h1>
+      </main>
+    </section>
+
+
+
+  <!-- ... slide 2 e slide 1 como já estão ... -->
+
+  </div>
+
+  <script src="script.js"></script>
+
+</body>
+</html>
