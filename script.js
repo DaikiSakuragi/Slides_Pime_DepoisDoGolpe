@@ -233,9 +233,6 @@ window.addEventListener('resize', updateCarousel);
 
 /* ============ TRANSIÇÃO SLIDE 2 -> SLIDE 3 (TIROS) ============ */
 let audioCtx;
-const flash = document.createElement('div');
-flash.id = 's3flash';
-document.body.appendChild(flash);
 
 const cssTiros = document.createElement('style');
 cssTiros.textContent = `
@@ -291,7 +288,6 @@ function addHole(xp, yp) {
 function fireShot(x, y) {
   bang();
   addHole(x, y);
-  flash.animate([{ opacity: .55 }, { opacity: 0 }], { duration: 150 });
   const k = 7 + Math.random() * 7;
   const rx = (Math.random() - .5) * 2 * k, ry = (Math.random() - .5) * 2 * k;
   stage.animate([{ transform: 'translate(0,0)' }, { transform: `translate(${rx}px,${ry}px)` }, { transform: 'translate(0,0)' }], { duration: 170 });
@@ -433,3 +429,4 @@ setInterval(() => {
 }, 120);
 
 console.log('apresentação carregada');
+
