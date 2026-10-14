@@ -62,7 +62,7 @@
       position:absolute; z-index:3; pointer-events:none;
 
       /* sem blur: o vídeo continua nítido, só ganha brilho e cor */
-      /*-webkit-backdrop-filter:saturate(1.35) contrast(1.08) brightness(1.1);*/
+      -webkit-backdrop-filter:saturate(1.35) contrast(1.08) brightness(1.1);
       backdrop-filter:saturate(1.35) contrast(1.08) brightness(1.1);
 
       background:
