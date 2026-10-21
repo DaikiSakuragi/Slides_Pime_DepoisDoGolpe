@@ -9,9 +9,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
-
-
-  </style>
 </head>
 <body>
 
@@ -24,94 +21,73 @@
 
   <div id="stage">
 
-<!-- ================= SLIDE 3 (IDEIA - CARROSSEL) ================= -->
-    <section class="slide" id="slide3">
-      <h2>IDEIA</h2>
+    <!-- ================= SLIDE 1 · CAPA ================= -->
+    <section class="slide" id="slide1">
+      <video class="bg-video" id="myVideo" autoplay loop muted playsinline>
+        <source src="videos/Video_BG.mp4" type="video/mp4">
+      </video>
 
-      <div class="carousel-container">
-        <div class="carousel-track" id="carouselTrack">
-          
-          <!-- Card 1 -->
-          <article class="carousel-card">
-            <span class="label">Documento 01</span>
-            <div class="card-photo" style="background-image:url('fotos/Ideia/card1.jpg')"></div>
-            <p class="card-text">
-              Enquanto a América Latina tentava cicatrizar as feridas dos violentos golpes militares clássicos da Guerra Fria — como o de <strong>1964 no Brasil</strong>, o de <strong>1973 no Chile</strong> e o de <strong>1976 na Argentina</strong> —, o Peru desenhava uma ruptura institucional inédita operada por vias civis.            </p>
-            <h3 class="card-title">Contexto Regional</h3>
-          </article>
+      <svg class="overlay-svg" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <g id="silhouettes">
+            <image id="imgJuan" href="fotos/Juan_Glass.png" />
+            <image id="imgErnesto" href="fotos/Ernesto_Glass.png" />
+          </g>
 
-          <!-- Card 2 -->
-          <article class="carousel-card">
-            <span class="label">Documento 02</span>
-            <div class="card-photo" style="background-image:url('fotos/Ideia/card2.jpg')"></div>
-            <p class="card-text">
-              O avanço terrorista e os massacres promovidos pelas guerrilhas radicais do Sendero Luminoso (maoísta) e do MRTA (marxista-leninista) espalharam o pânico social, criando o pretexto de segurança perfeito para a centralização do poder.            </p>
-            <h3 class="card-title">Ascensão das Guerrilhas</h3>
-          </article>
+          <filter id="toBlack" color-interpolation-filters="sRGB">
+            <feColorMatrix type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0" />
+          </filter>
 
-          <!-- Card 3 -->
-          <article class="carousel-card">
-            <span class="label">Documento 03</span>
-            <div class="card-photo" style="background-image:url('fotos/Ideia/card3.jpg')"></div>
-            <p class="card-text">
-              Castigado por uma hiperinflação sufocante de 7.000%, escassez crônica e o cerco armado às cidades, o colapso total do primeiro governo García deixou o país quebrado e desiludido com a política tradicional.            </p>
-            <h3 class="card-title">Crise de Alan García</h3>
-          </article>
+          <mask id="hole-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="100%" height="100%">
+            <rect width="100%" height="100%" fill="white" />
+            <use href="#silhouettes" filter="url(#toBlack)" />
+          </mask>
 
-          <!-- Card 4 -->
-          <article class="carousel-card">
-            <span class="label">Documento 04</span>
-            <div class="card-photo" style="background-image:url('fotos/Ideia/card4.jpg')"></div>
-            <p class="card-text">
-              Apresentando-se como um outsider pragmático, o desconhecido Alberto Fujimori capturou o voto popular e derrotou o favoritismo do escritor Mario Vargas Llosa, cujo plano liberal assustava os mais pobres com a promessa de um "choque" econômico imediato.            </p>
-            <h3 class="card-title">Eleição de Fujimori</h3>
-          </article>
+          <radialGradient id="redGrad" cx="50%" cy="50%" r="55%">
+            <stop offset="0%" stop-color="rgb(95,0,0)" stop-opacity="0.97" />
+            <stop offset="100%" stop-color="rgb(6,5,4)" stop-opacity="1" />
+          </radialGradient>
+        </defs>
 
-          <!-- Card 5 -->
-          <article class="carousel-card">
-            <span class="label">Documento 05</span>
-            <div class="card-photo" style="background-image:url('fotos/Ideia/card5.jpg')"></div>
-            <p class="card-text">
-              Após aplicar ele mesmo as duras reformas neoliberais que havia negado em campanha, Fujimori colocou tanques nas ruas em 1992, dissolveu o Congresso e interveio no Judiciário com o apoio irrestrito das Forças Armadas.            </p>
-            <h3 class="card-title">Fujishock e Autogolpe</h3>
-          </article>
+        <rect width="100%" height="100%" fill="url(#redGrad)" mask="url(#hole-mask)" />
+      </svg>
 
-          <!-- Card 6 -->
-          <article class="carousel-card">
-            <span class="label">Documento 06</span>
-            <div class="card-photo" style="background-image:url('fotos/Ideia/card6.jpg')"></div>
-            <p class="card-text">
-              Legitimado pelo medo coletivo após o atentado de Tarata — onde carros-bomba do Sendero Luminoso devastaram o centro financeiro de Lima e mataram 25 civis —, o regime capturou as lideranças guerrilheiras, mas acobertou crimes de Estado e massacres brutais cometidos pelo esquadrão da morte oficial (Grupo Colina), como em La Cantuta, onde um professor e nove estudantes universitários foram sequestrados, executados e enterrados clandestinamente.
-            <h3 class="card-title">Tarata e Cantuta</h3>
-          </article>
+      <div class="glass" id="glassJuan"></div>
+      <div class="glass" id="glassErnesto"></div>
 
-          <!-- Card 7 -->
-          <article class="carousel-card">
-            <span class="label">Documento 07</span>
-            <div class="card-photo" style="background-image:url('fotos/Ideia/card7.jpg')"></div>
-            <p class="card-text">
-              O império fujimorista ruiu no ano 2000 após o vazamento dos Vladivídeos — que escancararam a compra massiva de políticos e da imprensa pela inteligência estatal —, culminando na fuga do presidente e em sua histórica renúncia enviada por fax.
-            </p>
-            <h3 class="card-title">Queda do Regime</h3>
-          </article>
+      <svg class="outline-svg" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <filter id="glassEdge" filterUnits="userSpaceOnUse" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+            <feMorphology in="SourceAlpha" operator="erode" radius="2" result="eroded" />
+            <feComposite in="SourceAlpha" in2="eroded" operator="out" result="ring" />
+            <feFlood flood-color="#ffffff" flood-opacity="0.75" result="white" />
+            <feComposite in="white" in2="ring" operator="in" result="edge" />
+            <feGaussianBlur in="edge" stdDeviation="2.5" result="halo" />
+            <feMerge>
+              <feMergeNode in="halo" />
+              <feMergeNode in="edge" />
+            </feMerge>
+          </filter>
+        </defs>
 
-        </div>
+        <use href="#silhouettes" filter="url(#glassEdge)" />
+      </svg>
+
+      <div class="top-bar">
+        <span>CENTRO UNIVERSITÁRIO BELAS ARTES</span>
+        <span>PIME 2° SEMESTRE</span>
       </div>
 
-      <!-- Navegação Inferior -->
-      <div class="carousel-controls">
-        <button class="nav-btn" id="prevBtn" type="button" aria-label="Anterior">&lt;</button>
-        <div class="bars-container" id="barsContainer"></div>
-        <button class="nav-btn" id="nextBtn" type="button" aria-label="Próximo">&gt;</button>
-      </div>
+      <main class="slide-capa">
+        <h1 class="titulo-capa">DEPOIS DO GOLPE</h1>
+      </main>
     </section>
 
-    <!-- ================= SLIDE 2 ================= -->
-    <section class="slide" id="slide2">
+    <!-- ================= SLIDE 2 · INTEGRANTES ================= -->
+    <section class="slide slide-members" id="slide2">
       <h2>Integrantes e Funções</h2>
 
       <div class="grid">
-        <!-- Troque as imagens em fotos/Integrantes/ pelos arquivos reais de cada pessoa -->
         <article class="card" style="--i:0">
           <span class="label">Ficha técnica</span>
           <div class="photo" style="background-image:url('fotos/Integrantes/Ana.JPG')"></div>
@@ -170,81 +146,404 @@
       </div>
     </section>
 
-    <!-- ================= SLIDE 1 (CAPA) ================= -->
-    <section class="slide" id="slide1">
+    <!-- ================= SLIDE 3 · IDEIA (CARROSSEL) ================= -->
+    <section class="slide slide-fade" id="slide3">
+      <h2>IDEIA</h2>
 
-      <video class="bg-video" id="myVideo" autoplay loop muted playsinline>
-        <source src="videos/Video_BG.mp4" type="video/mp4">
-      </video>
+      <div class="carousel-container">
+        <div class="carousel-track" id="carouselTrack">
 
-      <svg class="overlay-svg" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <g id="silhouettes">
-            <image id="imgJuan"    href="fotos/Juan_Glass.png" />
-            <image id="imgErnesto" href="fotos/Ernesto_Glass.png" />
-          </g>
+          <article class="carousel-card">
+            <span class="label">Documento 01</span>
+            <div class="card-photo" style="background-image:url('fotos/Arquivo/Chile_1973.webp')"></div>
+            <p class="card-text">
+              Enquanto a América Latina tentava cicatrizar as feridas dos violentos golpes militares clássicos da Guerra Fria — como o de <strong>1964 no Brasil</strong>, o de <strong>1973 no Chile</strong> e o de <strong>1976 na Argentina</strong> —, o Peru desenhava uma ruptura institucional inédita operada por vias civis.
+            </p>
+            <h3 class="card-title">Contexto Regional</h3>
+          </article>
 
-          <filter id="toBlack" color-interpolation-filters="sRGB">
-            <feColorMatrix type="matrix"
-              values="0 0 0 0 0
-                      0 0 0 0 0
-                      0 0 0 0 0
-                      0 0 0 1 0" />
-          </filter>
+          <article class="carousel-card">
+            <span class="label">Documento 02</span>
+            <div class="card-photo" style="background-image:url('fotos/Arquivo/Terrosrismo.jpg')"></div>
+            <p class="card-text">
+              O avanço terrorista e os massacres promovidos pelas guerrilhas radicais do Sendero Luminoso (maoísta) e do MRTA (marxista-leninista) espalharam o pânico social, criando o pretexto de segurança perfeito para a centralização do poder.
+            </p>
+            <h3 class="card-title">Ascensão das Guerrilhas</h3>
+          </article>
 
-          <mask id="hole-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="100%" height="100%">
-            <rect width="100%" height="100%" fill="white" />
-            <use href="#silhouettes" filter="url(#toBlack)" />
-          </mask>
+          <article class="carousel-card">
+            <span class="label">Documento 03</span>
+            <div class="card-photo" style="background-image:url('fotos/Arquivo/Alan Garcia.jpg')"></div>
+            <p class="card-text">
+              Castigado por uma hiperinflação sufocante de 7.000%, escassez crônica e o cerco armado às cidades, o colapso total do primeiro governo García deixou o país quebrado e desiludido com a política tradicional.
+            </p>
+            <h3 class="card-title">Crise de Alan García</h3>
+          </article>
 
-          <radialGradient id="redGrad" cx="50%" cy="50%" r="55%">
-            <stop offset="0%"   stop-color="rgb(95,0,0)" stop-opacity="0.97" />
-            <stop offset="100%" stop-color="rgb(6,5,4)"  stop-opacity="1" />
-          </radialGradient>
-        </defs>
+          <article class="carousel-card">
+            <span class="label">Documento 04</span>
+            <div class="card-photo" style="background-image:url('fotos/Arquivo/Fujimori_Eleito.avif')"></div>
+            <p class="card-text">
+              Apresentando-se como um outsider pragmático, o desconhecido Alberto Fujimori capturou o voto popular e derrotou o favoritismo do escritor Mario Vargas Llosa, cujo plano liberal assustava os mais pobres com a promessa de um "choque" econômico imediato.
+            </p>
+            <h3 class="card-title">Eleição de Fujimori</h3>
+          </article>
 
-        <rect width="100%" height="100%" fill="url(#redGrad)" mask="url(#hole-mask)" />
-      </svg>
+          <article class="carousel-card">
+            <span class="label">Documento 05</span>
+            <div class="card-photo" style="background-image:url('fotos/Arquivo/Autogolpe.jpeg')"></div>
+            <p class="card-text">
+              Após aplicar ele mesmo as duras reformas neoliberais que havia negado em campanha, Fujimori colocou tanques nas ruas em 1992, dissolveu o Congresso e interveio no Judiciário com o apoio irrestrito das Forças Armadas.
+            </p>
+            <h3 class="card-title">Fujishock e Autogolpe</h3>
+          </article>
 
-      <div class="glass" id="glassJuan"></div>
-      <div class="glass" id="glassErnesto"></div>
+          <article class="carousel-card">
+            <span class="label">Documento 06</span>
+            <div class="card-photo" style="background-image:url('fotos/Arquivo/Tarata.jpg')"></div>
+            <p class="card-text">
+              Legitimado pelo medo coletivo após o atentado de Tarata — onde carros-bomba do Sendero Luminoso devastaram o centro financeiro de Lima e mataram 25 civis —, o regime capturou as lideranças guerrilheiras, mas acobertou crimes de Estado e massacres brutais cometidos pelo esquadrão da morte oficial (Grupo Colina), como em La Cantuta, onde um professor e nove estudantes universitários foram sequestrados, executados e enterrados clandestinamente.
+            </p>
+            <h3 class="card-title">Tarata e Cantuta</h3>
+          </article>
 
-      <svg class="outline-svg" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <filter id="glassEdge" filterUnits="userSpaceOnUse" x="0" y="0" width="100%" height="100%"
-                  color-interpolation-filters="sRGB">
-            <feMorphology in="SourceAlpha" operator="erode" radius="2" result="eroded" />
-            <feComposite in="SourceAlpha" in2="eroded" operator="out" result="ring" />
-            <feFlood flood-color="#ffffff" flood-opacity="0.75" result="white" />
-            <feComposite in="white" in2="ring" operator="in" result="edge" />
-            <feGaussianBlur in="edge" stdDeviation="2.5" result="halo" />
-            <feMerge>
-              <feMergeNode in="halo" />
-              <feMergeNode in="edge" />
-            </feMerge>
-          </filter>
-        </defs>
+          <article class="carousel-card">
+            <span class="label">Documento 07</span>
+            <div class="card-photo" style="background-image:url('fotos/Arquivo/Vladivideos.png')"></div>
+            <p class="card-text">
+              O império fujimorista ruiu no ano 2000 após o vazamento dos Vladivídeos — que escancararam a compra massiva de políticos e da imprensa pela inteligência estatal —, culminando na fuga do presidente e em sua histórica renúncia enviada por fax.
+            </p>
+            <h3 class="card-title">Queda do Regime</h3>
+          </article>
 
-        <use href="#silhouettes" filter="url(#glassEdge)" />
-      </svg>
-
-      <div class="top-bar">
-        <span>CENTRO UNIVERSITÁRIO BELAS ARTES</span>
-        <span>PIME 2° SEMESTRE</span>
+        </div>
       </div>
 
-      <main class="slide-capa">
-        <h1 class="titulo-capa">DEPOIS DO GOLPE</h1>
-      </main>
+      <div class="carousel-controls">
+        <button class="nav-btn" id="prevBtn" type="button" aria-label="Anterior">&lt;</button>
+        <div class="bars-container" id="barsContainer"></div>
+        <button class="nav-btn" id="nextBtn" type="button" aria-label="Próximo">&gt;</button>
+      </div>
     </section>
 
+    <!-- ================= SLIDE 4 · ROTEIRO ================= -->
+    <section class="slide slide-fade" id="slide4" aria-label="Roteiro do projeto">
+      <header class="script-header">
+        <h2>O ROTEIRO</h2>
+      </header>
 
+      <nav class="script-tabs" role="tablist" aria-label="Seções do roteiro">
+        <button class="script-tab active" id="tab-estrutura" role="tab" aria-selected="true" aria-controls="panel-estrutura" data-panel="estrutura">Estrutura</button>
+        <button class="script-tab" id="tab-personagens" role="tab" aria-selected="false" aria-controls="panel-personagens" data-panel="personagens">Personagens</button>
+        <button class="script-tab" id="tab-acuidade" role="tab" aria-selected="false" aria-controls="panel-acuidade" data-panel="acuidade">Acuidade histórica</button>
+        <button class="script-tab" id="tab-referencias" role="tab" aria-selected="false" aria-controls="panel-referencias" data-panel="referencias">Referências</button>
+      </nav>
 
-  <!-- ... slide 2 e slide 1 como já estão ... -->
+      <div class="script-panels">
 
+        <!-- Estrutura: PDF + métricas -->
+        <section class="script-panel active" id="panel-estrutura" role="tabpanel" aria-labelledby="tab-estrutura">
+          <div class="cover-upload">
+            <iframe id="scriptPdfPreview" title="Roteiro — Depois do Golpe" src="DepoisDoGolpeV2.pdf"></iframe>
+          </div>
+          <aside class="script-metrics" aria-label="Estatísticas do roteiro">
+            <section class="metric-block">
+              <h3>Tamanho</h3>
+              <div class="metric-pair">
+                <div><strong>5⁶⁄₈</strong><small>Páginas</small></div>
+                <div><strong>3</strong><small>Cenas</small></div>
+              </div>
+            </section>
+            <section class="metric-block">
+              <h3>Duração</h3>
+              <div class="metric-triple">
+                <div><small>Total</small><strong>00:06:18</strong></div>
+                <div><small>Ação</small><strong>00:03:06</strong></div>
+                <div><small>Diálogo</small><strong>00:03:11</strong></div>
+              </div>
+            </section>
+            <section class="metric-block">
+              <h3>Cenas</h3>
+              <div class="metric-pair">
+                <div><small>Exterior</small><strong>00:00:45</strong></div>
+              </div>
+            </section>
+          </aside>
+        </section>
+
+        <!-- Personagens -->
+        <section class="script-panel" id="panel-personagens" role="tabpanel" aria-labelledby="tab-personagens" hidden>
+          <div class="dossier-grid">
+            <article class="dossier dossier-juan">
+              <div class="dossier-top"><span>ARQUIVO DE PERSONAGEM</span><span>FICHA 01</span></div>
+              <div class="dossier-body">
+                <div class="dossier-photo">
+                  <img src="fotos/Camilo.jpg" alt="Foto de Juan">
+                  <span class="photo-tag">J&nbsp;·&nbsp;01</span>
+                </div>
+                <div class="dossier-info">
+                  <div class="dossier-mark">J.</div>
+                  <p class="dossier-role">O MILITAR</p>
+                  <h3>Juan</h3>
+                  <p class="dossier-description">Amigo de infância de Ernesto. A disciplina do colégio militar e o raciocínio estratégico forjaram um tenente pragmático, focado na missão e moldado pelos conflitos de sua época.</p>
+                  <dl>
+                    <div><dt>NOME COMPLETO</dt><dd>Juan Carlos Brecia</dd></div>
+                    <div><dt>IDADE</dt><dd>47</dd></div>
+                    <div><dt>LOCAL DE NASCIMENTO</dt><dd>Lima</dd></div>
+                  </dl>
+                </div>
+              </div>
+            </article>
+
+            <article class="dossier dossier-ernesto">
+              <div class="dossier-top"><span>ARQUIVO DE PERSONAGEM</span><span>FICHA 02</span></div>
+              <div class="dossier-body">
+                <div class="dossier-photo">
+                  <img src="fotos/Vini.jpg" alt="Foto de Ernesto">
+                  <span class="photo-tag">E&nbsp;·&nbsp;02</span>
+                </div>
+                <div class="dossier-info">
+                  <div class="dossier-mark">E.</div>
+                  <p class="dossier-role">O JORNALISTA</p>
+                  <h3>Ernesto</h3>
+                  <p class="dossier-description">Amigo de infância de Juan. Sua formação intelectual e vivência revolucionária o tornam um jornalista corajoso e crítico, dividido entre os ideais de justiça e a desesperança com a revolução.</p>
+                  <dl>
+                    <div><dt>NOME COMPLETO</dt><dd>Ernesto José Zevallos</dd></div>
+                    <div><dt>IDADE</dt><dd>45</dd></div>
+                    <div><dt>LOCAL DE NASCIMENTO</dt><dd>Tacna</dd></div>
+                  </dl>
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <!-- Acuidade histórica -->
+        <section class="script-panel historical-panel" id="panel-acuidade" role="tabpanel" aria-labelledby="tab-acuidade" hidden>
+          <article class="historical-card">
+            <div class="historical-photo">
+              <img src="images/consultor-historico.jpg" alt="Retrato do consultor histórico">
+            </div>
+            <div class="historical-bio">
+              <h2>Acuidade histórica</h2>
+              <h3>Nome do consultor</h3>
+              <p>
+                Pesquisador interessado na história política e social da América Latina, com atenção especial aos processos históricos que marcaram o continente no século XX. Colabora com projetos audiovisuais na pesquisa e contextualização de acontecimentos, contribuindo para a construção de narrativas atentas ao contexto histórico, político e social de cada época.
+              </p>
+            </div>
+          </article>
+        </section>
+
+        <!-- Referências -->
+        <section class="script-panel" id="panel-referencias" role="tabpanel" aria-labelledby="tab-referencias" hidden>
+          <div class="inspiration-posters" aria-label="Cartazes dos filmes de inspiração">
+            <article class="inspiration-poster">
+              <img class="poster-image" src="fotos/Ultima_sessao_freud.jpg" alt="Cartaz de A Última Sessão de Freud">
+              <b>A ÚLTIMA SESSÃO DE FREUD</b>
+            </article>
+            <article class="inspiration-poster">
+              <img class="poster-image" src="fotos/O Home da Terra.jpg" alt="Cartaz de O Homem da Terra">
+              <b>O HOMEM DA TERRA</b>
+            </article>
+            <article class="inspiration-poster">
+              <img class="poster-image" src="fotos/Agente.jpg" alt="Cartaz de O Agente Secreto">
+              <b>O AGENTE SECRETO</b>
+            </article>
+          </div>
+        </section>
+
+      </div>
+
+      <footer class="script-footer"><span>DEPOIS DO GOLPE</span><span>ROTEIRO EM DESENVOLVIMENTO <i>●</i></span></footer>
+    </section>
+
+    <!-- ================= SLIDE 5 · DIREÇÃO DE ARTE ================= -->
+    <!--
+      COMO TROCAR AS FOTOS: edite o src de cada <img> (pasta fotos/Técnicos/).
+      O alt de cada foto vira a legenda na tela cheia.
+    -->
+    <section class="slide slide-fade" id="slide5" aria-label="Direção de arte">
+      <h2 class="nb-title">DIREÇÃO DE ARTE</h2>
+
+      <div class="nb-wrap">
+        <div class="nb-book">
+
+          <nav class="nb-tabs" role="tablist" aria-label="Seções do caderno">
+            <button class="nb-tab nb-tab-1 active" role="tab" aria-selected="true" aria-controls="spread-ambientacao" data-spread="ambientacao">Ambientação</button>
+            <button class="nb-tab nb-tab-2" role="tab" aria-selected="false" aria-controls="spread-figurino" data-spread="figurino">Figurino</button>
+            <button class="nb-tab nb-tab-3" role="tab" aria-selected="false" aria-controls="spread-musica" data-spread="musica">Música</button>
+          </nav>
+
+          <div class="nb-paper">
+            <div class="nb-spiral" id="nbSpiral" aria-hidden="true"></div>
+
+            <!-- ===== AMBIENTAÇÃO ===== -->
+            <div class="nb-spread" id="spread-ambientacao" role="tabpanel">
+              <div class="nb-page nb-left">
+                <h3>Ambientação</h3>
+                <p class="nb-note">Referências de cenários dentro do contexto do Peru de 1992.</p>
+                <!-- Frame esquerdo: clique abre UMA foto em tela cheia -->
+                <figure class="nb-frame" style="--r:-1.6deg" data-lightbox="single" role="button" tabindex="0" aria-label="Ampliar foto">
+                  <img src="fotos/Técnicos/Mood_Cenário.jpeg" alt="Moodboard Cenário">
+                  <figcaption>Moodboard Cenário</figcaption>
+                </figure>
+              </div>
+
+              <div class="nb-page nb-right">
+                <h3>Set</h3>
+                <p class="nb-note">Locação escolhida para gravação.</p>
+                <!-- Frame direito: clique abre o carrossel. A capa é a 1ª foto; as outras ficam em .nb-gallery -->
+                <figure class="nb-frame" style="--r:1.4deg" data-lightbox="gallery" role="button" tabindex="0" aria-label="Abrir sequência de fotos">
+                  <img src="fotos/Técnicos/Casa_4.jpeg" alt="Set de Gravação">
+                  <figcaption>Set de Gravação</figcaption>
+                  <div class="nb-gallery" hidden>
+                    <img src="fotos/Técnicos/Casa_1.jpeg" alt="Set de Gravação · vista 2">
+                    <img src="fotos/Técnicos/Casa_2.jpeg" alt="Set de Gravação · vista 3">
+                    <img src="fotos/Técnicos/Casa_3.jpeg" alt="Set de Gravação · vista 4">
+                  </div>
+                </figure>
+              </div>
+            </div>
+
+            <!-- ===== FIGURINO ===== -->
+            <div class="nb-spread" id="spread-figurino" role="tabpanel" hidden>
+              <div class="nb-page nb-left">
+                <h3>Ernesto</h3>
+                <p class="nb-note">Traje de jornalista composto por camisa branca, colete azul-marinho, calça de risca de giz, cinto, sapatos castanhos e relógio.</p>
+                <figure class="nb-frame" style="--r:-1.6deg" data-lightbox="single" role="button" tabindex="0" aria-label="Ampliar foto">
+                  <img src="fotos/Técnicos/Fig_Ernesto.jpeg" alt="Figurino do Ernesto">
+                  <figcaption>Ernesto</figcaption>
+                </figure>
+              </div>
+
+              <div class="nb-page nb-right">
+                <h3>Juan</h3>
+                <p class="nb-note">Farda militar verde-oliva com vários bolsos, camisa branca, gravata e sapatos pretos, acompanhada de bolsa de ombro castanha.</p>
+                <figure class="nb-frame" style="--r:1.4deg" data-lightbox="single" role="button" tabindex="0" aria-label="Ampliar foto">
+                  <img src="fotos/Técnicos/Fig_Juan.jpeg" alt="Figurino do Juan">
+                  <figcaption>Juan</figcaption>
+                </figure>
+              </div>
+            </div>
+
+            <!-- ===== MÚSICA ===== -->
+            <div class="nb-spread" id="spread-musica" role="tabpanel" hidden>
+              <div class="nb-page nb-left">
+                <h3>Música</h3>
+                <p class="nb-note">Foco em trilhas sonoras em momentos pontuais e uma trilha longa apenas no começo como apresentação.</p>
+                <div class="nb-cassette">
+                  <div class="nb-reels"><i></i><i></i></div>
+                  <span class="nb-now" id="nbNow">Protótipo da trilha</span>
+                  <audio id="nbAudio" controls preload="none" src="prototipo_musica.mpeg"></audio>
+                </div>
+              </div>
+
+              <div class="nb-page nb-right">
+                <h3>Produção musical</h3>
+                <div class="nb-bio">
+                  <figure class="nb-mini" style="--r:2deg">
+                    <img src="fotos/Davi.jpeg" alt="Foto do produtor musical">
+                  </figure>
+                  <div>
+                    <h4>Davi</h4>
+                    <p class="nb-note">Estudante do 4° semestre de Produção Fonográfica no Centro Universitário Belas Artes e aluno da Dada.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="nb-footer"><span>DEPOIS DO GOLPE</span><span>CADERNO DE ARTE</span></footer>
+    </section>
+
+    <!-- ================= SLIDE 6 · FOTOGRAFIA ================= -->
+    <!--
+      COMO TROCAR AS FOTOS: cada botão da câmera aponta (data-gallery) para uma lista em .ph-galleries.
+      Edite o src de cada <img> (pasta fotos/Fotografia/); o alt vira a legenda. Adicione ou remova <img> à vontade.
+    -->
+    <section class="slide slide-fade" id="slide6" aria-label="Fotografia">
+      <h2 class="nb-title ph-title">FOTOGRAFIA</h2>
+
+      <div class="ph-stage">
+        <div class="ph-rig">
+
+          <!-- Câmera (as abas ficam integradas ao corpo dela) -->
+          <div class="ph-camera">
+            <div class="ph-shutter"></div>
+            <div class="ph-top">
+              <div class="ph-viewfinder"></div>
+              <span class="ph-engrave">DEPOIS DO GOLPE</span>
+              <div class="ph-flash"></div>
+            </div>
+            <div class="ph-body">
+              <div class="ph-badge"></div>
+              <div class="ph-lens"></div>
+              <div class="ph-slot"></div>
+              <div class="ph-tabs" role="tablist" aria-label="Seções de fotografia">
+                <button class="ph-tab active" type="button" role="tab" aria-selected="true" data-gallery="gal-decupagem">Decupagem</button>
+                <button class="ph-tab" type="button" role="tab" aria-selected="false" data-gallery="gal-storyboard">Storyboard</button>
+                <button class="ph-tab" type="button" role="tab" aria-selected="false" data-gallery="gal-foto-storyboard">Foto Storyboard</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Impressão estilo Polaroid + carrossel: clique na foto abre a sequência em tela cheia -->
+          <div class="ph-print-wrap">
+            <figure class="ph-print" id="phPrint" role="button" tabindex="0" aria-label="Ampliar foto">
+              <div class="ph-photo"><img id="phImg" alt=""></div>
+              <figcaption><b id="phLabel"></b><span id="phCaption"></span></figcaption>
+            </figure>
+            <button class="ph-nav ph-prev" type="button" aria-label="Foto anterior">‹</button>
+            <button class="ph-nav ph-next" type="button" aria-label="Próxima foto">›</button>
+          </div>
+
+        </div>
+
+        <!-- Fotos de cada aba (ficam escondidas; o JS lê daqui) -->
+        <div class="ph-galleries" hidden>
+          <div id="gal-decupagem">
+            <img src="fotos/Dec1.png" alt="Decupagem · página 1">
+            <img src="fotos/Dec2.png" alt="Decupagem · página 2">
+            <img src="fotos/Dec3.png" alt="Decupagem · página 3">
+            <img src="fotos/Dec4.png" alt="Decupagem · página 4">
+            <img src="fotos/Dec5.png" alt="Decupagem · página 5">
+            <img src="fotos/Dec6.png" alt="Decupagem · página 6">
+          </div>
+          <div id="gal-storyboard">
+            <img src="fotos/Storyboard1.png" alt="Storyboard · quadro 1">
+            <img src="fotos/Storyboard2.png" alt="Storyboard · quadro 2">
+            <img src="fotos/Storyboard3.png" alt="Storyboard · quadro 3">
+            <img src="fotos/Storyboard4.png" alt="Storyboard · quadro 4">
+            <img src="fotos/Storyboard5.png" alt="Storyboard · quadro 5">
+          </div>
+          <div id="gal-foto-storyboard">
+            <img src="fotos/Fotostoryboard/1.png" alt="Foto storyboard · quadro 1">
+            <img src="fotos/Fotostoryboard/2.png" alt="Foto storyboard · quadro 2">
+            <img src="fotos/Fotostoryboard/3.png" alt="Foto storyboard · quadro 3">
+            <img src="fotos/Fotostoryboard/4.png" alt="Foto storyboard · quadro 4">
+            <img src="fotos/Fotostoryboard/5.png" alt="Foto storyboard · quadro 5">
+          </div>
+        </div>
+      </div>
+
+      <footer class="nb-footer"><span>DEPOIS DO GOLPE</span><span>DIREÇÃO DE FOTOGRAFIA</span></footer>
+    </section>
+  </div>
+
+  <!-- Tela cheia das fotos do caderno (fora do #stage para ficar acima de tudo) -->
+  <div class="nb-lightbox" id="nbLightbox" hidden role="dialog" aria-modal="true" aria-label="Foto ampliada">
+    <button class="nb-lb-close" type="button" aria-label="Fechar">×</button>
+    <button class="nb-lb-nav nb-lb-prev" type="button" aria-label="Foto anterior">‹</button>
+    <figure class="nb-lb-figure">
+      <img id="nbLbImg" alt="">
+      <figcaption id="nbLbCaption"></figcaption>
+    </figure>
+    <button class="nb-lb-nav nb-lb-next" type="button" aria-label="Próxima foto">›</button>
+    <div class="nb-lb-count" id="nbLbCount"></div>
   </div>
 
   <script src="script.js"></script>
-
 </body>
 </html>
