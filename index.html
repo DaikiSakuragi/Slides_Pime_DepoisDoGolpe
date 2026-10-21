@@ -14,7 +14,12 @@
 
   <div class="vignette"></div>
 
+  <!-- Navegação global: volume + setas -->
   <div id="slidenav">
+    <div id="volume">
+      <button id="volBtn" type="button" aria-label="Mutar / desmutar">🔊</button>
+      <input id="volRange" type="range" min="0" max="100" value="50" aria-label="Volume">
+    </div>
     <button id="slPrev" aria-label="Slide anterior">‹</button>
     <button id="slNext" aria-label="Próximo slide">›</button>
   </div>
@@ -322,14 +327,13 @@
         <section class="script-panel historical-panel" id="panel-acuidade" role="tabpanel" aria-labelledby="tab-acuidade" hidden>
           <article class="historical-card">
             <div class="historical-photo">
-              <img src="images/consultor-historico.jpg" alt="Retrato do consultor histórico">
+              <img src="fotos/Consultor.jpg" alt="Retrato do consultor histórico">
             </div>
             <div class="historical-bio">
-              <h2>Acuidade histórica</h2>
-              <h3>Nome do consultor</h3>
+              <h2>Consultor Histórico</h2>
+              <h3>Elvis Vilca Aguilar</h3>
               <p>
-                Pesquisador interessado na história política e social da América Latina, com atenção especial aos processos históricos que marcaram o continente no século XX. Colabora com projetos audiovisuais na pesquisa e contextualização de acontecimentos, contribuindo para a construção de narrativas atentas ao contexto histórico, político e social de cada época.
-              </p>
+                Elvis Vilca Aguilar é professor de Ensino Secundário no Colegio Waldorf Lima, onde leciona as disciplinas de História e Literatura. Graduou-se em Educação pelo Instituto de Educación Superior Pedagógico Público Salesiano (IESPP Salesiano).
             </div>
           </article>
         </section>
@@ -530,6 +534,23 @@
 
       <footer class="nb-footer"><span>DEPOIS DO GOLPE</span><span>DIREÇÃO DE FOTOGRAFIA</span></footer>
     </section>
+
+    <!-- ================= SLIDE 7 · DESPEDIDA ================= -->
+    <section class="slide slide-fade" id="slide7" aria-label="Despedida">
+      <div class="end-wrap">
+        <div class="end-stamp">FIM</div>
+        <p class="end-kicker">FIM DA APRESENTAÇÃO</p>
+        <h2 class="end-title">OBRIGADO</h2>
+        <div class="end-rule"></div>
+        <p class="end-sub">DEPOIS DO GOLPE</p>
+        <p class="end-credits">
+          Ana Clara · Daiki Sakuragi · Eddie Kaiser · Gabriel Campos<br>
+          Heloisa de Picoli · Jean Morais · Pedro Pereira · Santiago Montoya
+        </p>
+      </div>
+      <footer class="nb-footer"><span>DEPOIS DO GOLPE</span><span>CENTRO UNIVERSITÁRIO BELAS ARTES · PIME 2° SEMESTRE</span></footer>
+    </section>
+
   </div>
 
   <!-- Tela cheia das fotos do caderno (fora do #stage para ficar acima de tudo) -->

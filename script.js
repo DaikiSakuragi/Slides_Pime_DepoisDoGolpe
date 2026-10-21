@@ -2,15 +2,18 @@
    DEPOIS DO GOLPE — apresentação web
    Índice
      1. Referências do DOM e estado global
-     2. Navegação (setas, teclado, botões)
-     3. Slide 1 · Capa (silhuetas e vídeo)
-     4. Transição 1 → 2 · Rachadura
-     5. Transição 2 → 3 · Tiros
-     6. Slide 3 · Carrossel
-     7. Transição 3 → 4 · Sangue líquido
-     8. Slide 4 · Roteiro (abas)
-     9. Slide 5 · Direção de arte (caderno)
-    10. Slide 6 · Fotografia (câmera e polaroid)
+     2. Áudio (volume geral + efeitos sintetizados)
+     3. Navegação (setas, teclado, botões)
+     4. Slide 1 · Capa (silhuetas e vídeo)
+     5. Transição 1 → 2 · Rachadura
+     6. Transição 2 → 3 · Tiros
+     7. Slide 3 · Carrossel
+     8. Transição 3 → 4 · Censura
+     9. Slide 4 · Roteiro (abas)
+    10. Slide 5 · Direção de arte (caderno)
+    11. Slide 6 · Fotografia (câmera e polaroid)
+    12. Transições 4 → 5 · 5 → 6 · 6 → 7 (explosão, fogo, cortina de sangue) e slide 7
+    13. Controle de volume
    ===================================================================== */
 
 
@@ -33,9 +36,11 @@ const slide3 = $('#slide3');
 const slide4 = $('#slide4');
 const slide5 = $('#slide5');
 const slide6 = $('#slide6');
+const slide7 = $('#slide7');
 const video  = $('#myVideo');
 
-const LAST_SLIDE = 6;
+const SVG_NS = 'http://www.w3.org/2000/svg';
+const LAST_SLIDE = 7;
 const state = { slide: 1, busy: false };
 
 /** Trava a navegação durante uma transição. */
@@ -51,14 +56,121 @@ function unlock(slide) {
   syncNav();
 }
 
-/** Alterna `.active-slide` entre dois slides com fade (3 a 6). */
+/** Alterna `.active-slide` entre dois slides com fade (3 a 7). */
 function swapActive(from, to) {
   if (from) from.classList.remove('active-slide');
   if (to) to.classList.add('active-slide');
 }
 
 
-/* ============ 2. NAVEGAÇÃO ============ */
+/* ============ 2. ÁUDIO ============ */
+let audioCtx, master;
+const sound = { volume: 0.5, muted: false };
+const gainFor = () => (sound.muted ? 0 : sound.volume * sound.volume); // curva quadrática: mais fino em volumes baixos
+
+/** Cria o contexto de áudio sob demanda (o navegador só permite após um clique/tecla). */
+function ac() {
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    master = audioCtx.createGain();
+    master.gain.value = gainFor();
+    master.connect(audioCtx.destination);
+  }
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  return audioCtx;
+}
+
+/** Ruído filtrado com decaimento. `at` = atraso em segundos. */
+function noise(at, dur, { type = 'lowpass', f0 = 2000, f1, q = 1, vol = 1, pow = 3 } = {}) {
+  const c = ac(), t = c.currentTime + at;
+  const len = Math.floor(c.sampleRate * dur);
+  const buf = c.createBuffer(1, len, c.sampleRate), d = buf.getChannelData(0);
+  for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, pow);
+  const src = c.createBufferSource(); src.buffer = buf;
+  const f = c.createBiquadFilter(); f.type = type; f.Q.value = q;
+  f.frequency.setValueAtTime(f0, t);
+  if (f1) f.frequency.exponentialRampToValueAtTime(f1, t + dur);
+  const g = c.createGain(); g.gain.value = vol;
+  src.connect(f).connect(g).connect(master);
+  src.start(t);
+}
+
+/** Tom que desliza de f0 para f1. */
+function tone(at, dur, { type = 'sine', f0 = 100, f1 = f0, vol = 0.8 } = {}) {
+  const c = ac(), t = c.currentTime + at;
+  const o = c.createOscillator(), g = c.createGain();
+  o.type = type;
+  o.frequency.setValueAtTime(f0, t);
+  o.frequency.exponentialRampToValueAtTime(f1, t + dur);
+  g.gain.setValueAtTime(0.0001, t);
+  g.gain.exponentialRampToValueAtTime(vol, t + 0.01);
+  g.gain.exponentialRampToValueAtTime(0.001, t + dur);
+  o.connect(g).connect(master);
+  o.start(t); o.stop(t + dur + 0.05);
+}
+
+/** Envolve um efeito: se o áudio falhar, a apresentação segue sem som. */
+const sfx = fn => (...a) => { try { fn(...a); } catch (e) { /* sem áudio */ } };
+
+const bang = sfx(() => {                       // tiro
+  noise(0, 0.4, { f0: 2200, vol: 1, pow: 4 });
+  tone(0, 0.3, { f0: 150, f1: 40, vol: 0.9 });
+});
+
+const crackSound = sfx(() => {                 // rachadura (1 → 2)
+  for (let i = 0; i < 10; i++)
+    noise(i * 0.06 + Math.random() * 0.04, 0.06, { type: 'highpass', f0: 1800 + Math.random() * 2500, vol: 0.7, pow: 2 });
+  noise(0.1, 1.3, { f0: 260, f1: 60, vol: 1, pow: 1.5 });
+  tone(0.7, 0.9, { f0: 80, f1: 28, vol: 0.9 });
+});
+
+const shatterSound = sfx(() => {               // cacos caindo (2 → 3)
+  for (let i = 0; i < 22; i++)
+    noise(i * 0.05 + Math.random() * 0.05, 0.09, { type: 'bandpass', f0: 3000 + Math.random() * 4000, q: 6, vol: 0.5, pow: 2 });
+  noise(0, 0.8, { f0: 900, f1: 150, vol: 0.6, pow: 2 });
+});
+
+const censorSound = sfx(() => {                // censura (3 → 4)
+  for (let i = 0; i < 8; i++) {                // tarjas batendo, uma a uma
+    noise(i * 0.07, 0.12, { f0: 700, f1: 120, vol: 0.55, pow: 3 });
+    tone(i * 0.07, 0.1, { f0: 160, f1: 60, vol: 0.35 });
+  }
+  tone(0.95, 0.6, { f0: 95, f1: 28, vol: 1 }); // carimbo
+  noise(0.95, 0.35, { f0: 1000, f1: 100, vol: 1, pow: 3 });
+  noise(1.55, 0.7, { type: 'bandpass', f0: 300, f1: 1400, q: 0.8, vol: 0.45, pow: 1 }); // tarjas saindo
+});
+
+const bombSound = sfx(() => {                  // explosão (4 → 5)
+  tone(0, 1.6, { f0: 70, f1: 22, vol: 1 });
+  noise(0, 2.4, { f0: 1400, f1: 70, vol: 1.2, pow: 2 });
+  noise(0.05, 0.3, { type: 'highpass', f0: 3000, vol: 0.8, pow: 3 });
+  tone(0.35, 1.8, { f0: 4200, vol: 0.05 });    // zumbido no ouvido
+});
+
+const fireSound = sfx(() => {                  // fogo (5 → 6)
+  noise(0, 0.5, { type: 'bandpass', f0: 500, f1: 1800, q: 0.7, vol: 0.8, pow: 0.5 });
+  noise(0.2, 2, { type: 'bandpass', f0: 900, q: 0.5, vol: 0.45, pow: 0.4 });
+  for (let i = 0; i < 28; i++)
+    noise(0.2 + Math.random() * 1.9, 0.03, { type: 'highpass', f0: 2500 + Math.random() * 3000, vol: 0.8, pow: 1 });
+});
+
+const bloodSound = sfx(() => {                 // cortina de sangue (6 → 7)
+  tone(0, 2.3, { type: 'sawtooth', f0: 55, f1: 38, vol: 0.18 });
+  noise(0, 1.0, { f0: 200, f1: 60, vol: 0.8, pow: 0.8 });
+  tone(1.0, 0.5, { f0: 90, f1: 30, vol: 1 });
+  noise(1.0, 0.5, { f0: 500, f1: 80, vol: 0.9, pow: 2 });
+  for (let i = 0; i < 7; i++) tone(1.3 + i * 0.22, 0.12, { f0: 900, f1: 250, vol: 0.3 });
+});
+
+const printSound = sfx(() => {                 // impressora da câmera
+  tone(0, 1, { type: 'sawtooth', f0: 70, f1: 110, vol: 0.15 });
+  noise(0, 0.9, { type: 'bandpass', f0: 300, q: 3, vol: 0.25, pow: 0.3 });
+});
+
+const whoosh = sfx(() => noise(0, 0.5, { type: 'bandpass', f0: 400, f1: 1500, q: 0.8, vol: 0.4, pow: 1 })); // ao voltar
+
+
+/* ============ 3. NAVEGAÇÃO ============ */
 const slPrev = $('#slPrev');
 const slNext = $('#slNext');
 
@@ -74,7 +186,8 @@ function goNext() {
     2: shootToSlide3,
     3: () => (carousel.index < carousel.cards.length - 1 ? goToCard(carousel.index + 1) : bleedToSlide4()),
     4: toSlide5,
-    5: toSlide6
+    5: toSlide6,
+    6: toSlide7
   };
   const action = actions[state.slide];
   if (action) action();
@@ -87,14 +200,16 @@ function goPrev() {
     3: () => (carousel.index > 0 ? goToCard(carousel.index - 1) : backFromSlide3()),
     4: backFromSlide4,
     5: backFromSlide5,
-    6: backFromSlide6
+    6: backFromSlide6,
+    7: backFromSlide7
   };
   const action = actions[state.slide];
-  if (action) action();
+  if (action) { whoosh(); action(); }
 }
 
 window.addEventListener('keydown', e => {
   if (document.body.classList.contains('nb-lightbox-open')) return;
+  if (e.target.closest && e.target.closest('#volume')) return; // setas ajustam o volume
   const next = ['ArrowRight', 'PageDown', ' '].includes(e.key);
   const prev = ['ArrowLeft', 'PageUp'].includes(e.key);
   if (!next && !prev) return;
@@ -108,7 +223,7 @@ if (slNext) slNext.addEventListener('click', e => { e.stopPropagation(); slNext.
 syncNav();
 
 
-/* ============ 3. SLIDE 1 · CAPA ============ */
+/* ============ 4. SLIDE 1 · CAPA ============ */
 document.addEventListener('click', () => {
   if (video && video.paused) video.play();
 });
@@ -170,9 +285,7 @@ layoutSilhouettes();
 window.addEventListener('resize', layoutSilhouettes);
 
 
-/* ============ 4. TRANSIÇÃO 1 → 2 · RACHADURA ============ */
-const SVG_NS = 'http://www.w3.org/2000/svg';
-
+/* ============ 5. TRANSIÇÃO 1 → 2 · RACHADURA ============ */
 function makeCrack() {
   const steps = 16;
   const pts = [];
@@ -217,6 +330,7 @@ function clip(el, polygon) {
 function crackToNext() {
   if (state.busy || state.slide !== 1) return;
   lock();
+  crackSound();
 
   const pts = makeCrack();
   const edge = pts.map(p => `${fmt(p[0])}% ${fmt(p[1])}%`).join(', ');
@@ -289,42 +403,7 @@ function backToCover() {
 }
 
 
-/* ============ 5. TRANSIÇÃO 2 → 3 · TIROS ============ */
-let audioCtx;
-
-/** Estampido sintetizado (ruído + grave). */
-function bang() {
-  try {
-    audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
-    const t = audioCtx.currentTime;
-    const sr = audioCtx.sampleRate;
-
-    const buf = audioCtx.createBuffer(1, sr * 0.4, sr);
-    const data = buf.getChannelData(0);
-    for (let i = 0; i < data.length; i++) {
-      data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / data.length, 4);
-    }
-
-    const noise = audioCtx.createBufferSource();
-    noise.buffer = buf;
-    const lowpass = audioCtx.createBiquadFilter();
-    lowpass.type = 'lowpass';
-    lowpass.frequency.value = 2200;
-    noise.connect(lowpass).connect(audioCtx.destination);
-    noise.start(t);
-
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    osc.frequency.setValueAtTime(150, t);
-    osc.frequency.exponentialRampToValueAtTime(40, t + 0.18);
-    gain.gain.setValueAtTime(0.9, t);
-    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.25);
-    osc.connect(gain).connect(audioCtx.destination);
-    osc.start(t);
-    osc.stop(t + 0.3);
-  } catch (e) { /* áudio indisponível: segue sem som */ }
-}
-
+/* ============ 6. TRANSIÇÃO 2 → 3 · TIROS ============ */
 function addHole(xPercent, yPercent) {
   const hole = document.createElement('div');
   hole.className = 's3hole';
@@ -434,7 +513,7 @@ function shootToSlide3() {
   const shatterAt = lastDelay + 260;
 
   shots.forEach(([t, x, y]) => setTimeout(() => fireShot(x, y), t));
-  setTimeout(() => shatter(lastX, lastY), shatterAt);
+  setTimeout(() => { shatterSound(); shatter(lastX, lastY); }, shatterAt);
 
   setTimeout(() => {
     $$('#s3shards').forEach(b => b.remove());
@@ -460,7 +539,7 @@ function backFromSlide3() {
 }
 
 
-/* ============ 6. SLIDE 3 · CARROSSEL ============ */
+/* ============ 7. SLIDE 3 · CARROSSEL ============ */
 const carousel = {
   track: $('#carouselTrack'),
   cards: $$('.carousel-card'),
@@ -501,73 +580,54 @@ $('#nextBtn')?.addEventListener('click', () => goToCard(carousel.index + 1));
 window.addEventListener('resize', updateCarousel);
 
 
-/* ============ 7. TRANSIÇÃO 3 → 4 · SANGUE LÍQUIDO ============ */
-function createLiquidFilter() {
-  const svg = document.createElementNS(SVG_NS, 'svg');
-  Object.assign(svg.style, { position: 'fixed', width: '1px', height: '1px', left: '-10px', top: '-10px', overflow: 'hidden' });
-
-  const filter = document.createElementNS(SVG_NS, 'filter');
-  const noise = document.createElementNS(SVG_NS, 'feTurbulence');
-  const displacement = document.createElementNS(SVG_NS, 'feDisplacementMap');
-
-  const set = (el, attrs) => Object.entries(attrs).forEach(([k, v]) => el.setAttribute(k, v));
-  set(filter, { id: 'liquidDistortion', x: '-20%', y: '-20%', width: '140%', height: '160%' });
-  set(noise, { type: 'fractalNoise', baseFrequency: '0.008 0.025', numOctaves: '2', seed: '7', result: 'noise' });
-  set(displacement, { in: 'SourceGraphic', in2: 'noise', scale: '0', xChannelSelector: 'R', yChannelSelector: 'G' });
-
-  filter.append(noise, displacement);
-  const defs = document.createElementNS(SVG_NS, 'defs');
-  defs.appendChild(filter);
-  svg.appendChild(defs);
-
-  return { svg, displacement };
-}
-
+/* ============ 8. TRANSIÇÃO 3 → 4 · CENSURA ============ */
+/* Tarjas pretas de censura cobrem a tela, um carimbo "CENSURADO" bate com tremor,
+   o slide muda por baixo e as tarjas saem pelo outro lado. */
 function bleedToSlide4() {
   if (state.busy || state.slide !== 3 || !slide4) return;
   lock();
+  censorSound();
 
-  const duration = 1500;
-  const start = performance.now();
-  const rect = slide3.getBoundingClientRect();
-
-  // Cópia do slide 3 (IDs mantidos: o CSS dos cards depende deles).
-  const overlay = slide3.cloneNode(true);
-  overlay.classList.add('liquid-transition-layer');
-  overlay.setAttribute('aria-hidden', 'true');
-  Object.assign(overlay.style, {
-    position: 'fixed',
-    top: `${rect.top}px`,
-    left: `${rect.left}px`,
-    width: `${rect.width}px`,
-    height: `${rect.height}px`,
-    margin: '0',
-    zIndex: '99999',
-    pointerEvents: 'none'
-  });
-
-  const { svg, displacement } = createLiquidFilter();
-  document.body.append(svg, overlay);
-
-  function frame(now) {
-    const progress = Math.min((now - start) / duration, 1);
-    const eased = progress * progress * (3 - 2 * progress);
-
-    displacement.setAttribute('scale', String(Math.round(eased * 85)));
-    overlay.style.transform = `translateY(${eased * 12}vh) scaleY(${1 + eased * 0.12})`;
-
-    if (progress < 1) {
-      requestAnimationFrame(frame);
-      return;
-    }
-
-    swapActive(slide3, slide4);
-    overlay.remove();
-    svg.remove();
-    unlock(4);
+  const BARS = 8;
+  const fx = makeFx('fx-censor');
+  const bars = [];
+  for (let i = 0; i < BARS; i++) {
+    const bar = document.createElement('div');
+    bar.className = 'fx-bar';
+    bar.style.top = (i * 100 / BARS) + '%';
+    bar.style.height = (100 / BARS + 0.3) + '%';
+    bar.style.transform = 'translateX(-101%)';
+    fx.appendChild(bar);
+    bars.push(bar);
+    bar.animate(
+      [{ transform: 'translateX(-101%)' }, { transform: 'translateX(0)' }],
+      { duration: 380, delay: i * 70, easing: 'cubic-bezier(.2,.8,.3,1)', fill: 'forwards' }
+    );
   }
 
-  requestAnimationFrame(frame);
+  const stamp = document.createElement('div');
+  stamp.className = 'fx-stamp';
+  stamp.textContent = 'CENSURADO';
+  fx.appendChild(stamp);
+
+  setTimeout(() => {                           // carimbo bate
+    stamp.animate([
+      { transform: 'translate(-50%,-50%) rotate(-8deg) scale(3.2)', opacity: 0 },
+      { transform: 'translate(-50%,-50%) rotate(-8deg) scale(1)', opacity: 1 }
+    ], { duration: 160, easing: 'cubic-bezier(.3,0,.7,1)', fill: 'forwards' });
+    shakeStage(700, 18);
+  }, 950);
+
+  setTimeout(() => {                           // troca escondida pelas tarjas
+    cutSwap(slide3, slide4);
+    stamp.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 300, fill: 'forwards' });
+    bars.forEach((bar, i) => bar.animate(
+      [{ transform: 'translateX(0)' }, { transform: 'translateX(101%)' }],
+      { duration: 450, delay: i * 60, easing: 'cubic-bezier(.7,0,.8,.3)', fill: 'forwards' }
+    ));
+  }, 1500);
+
+  setTimeout(() => { fx.remove(); unlock(4); }, 2450);
 }
 
 function backFromSlide4() {
@@ -578,7 +638,7 @@ function backFromSlide4() {
 }
 
 
-/* ============ 8. SLIDE 4 · ROTEIRO ============ */
+/* ============ 9. SLIDE 4 · ROTEIRO ============ */
 const scriptTabs = $$('.script-tab');
 const scriptPanels = $$('.script-panel');
 
@@ -597,7 +657,7 @@ function activateScriptTab(tab) {
 scriptTabs.forEach(tab => tab.addEventListener('click', () => activateScriptTab(tab)));
 
 
-/* ============ 9. SLIDE 5 · DIREÇÃO DE ARTE ============ */
+/* ============ 10. SLIDE 5 · DIREÇÃO DE ARTE ============ */
 const notebook = {
   tabs: $$('.nb-tab'),
   paper: $('.nb-paper'),
@@ -694,7 +754,7 @@ notebook.tabs.forEach(t => t.addEventListener('click', () => openNotebookTab(t.d
 /* --- Fotos coladas no HTML --- */
 $$('.nb-frame img, .nb-mini img').forEach(img => watchEmptyImage(img, img.closest('.nb-frame, .nb-mini')));
 
-/* --- Tela cheia: foto única ou carrossel --- */
+/* --- Tela cheia: foto única ou carrossel (usada também no slide 6) --- */
 const lightbox = {
   el: $('#nbLightbox'),
   img: $('#nbLbImg'),
@@ -794,23 +854,8 @@ if (notebook.audio) {
   });
 }
 
-/* --- Transição 4 ↔ 5 (fade) --- */
-function toSlide5() {
-  if (state.busy || state.slide !== 4 || !slide5) return;
-  lock();
-  swapActive(slide4, slide5);
-  setTimeout(() => unlock(5), 650);
-}
 
-function backFromSlide5() {
-  if (state.busy || state.slide !== 5) return;
-  lock();
-  pauseMusic();
-  swapActive(slide5, slide4);
-  setTimeout(() => unlock(4), 650);
-}
-
-/* ============ 10. SLIDE 6 · FOTOGRAFIA (CÂMERA) ============ */
+/* ============ 11. SLIDE 6 · FOTOGRAFIA (CÂMERA) ============ */
 const photo = {
   tabs: $$('.ph-tab'),
   wrap: $('.ph-print-wrap'),
@@ -826,29 +871,6 @@ const photo = {
   index: 0,      // foto atual dentro da aba
   timer: null
 };
-
-/** Zumbido curto de motor de impressão. */
-function printSound() {
-  try {
-    audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
-    const t = audioCtx.currentTime;
-    const osc = audioCtx.createOscillator();
-    const lowpass = audioCtx.createBiquadFilter();
-    const gain = audioCtx.createGain();
-    osc.type = 'sawtooth';
-    osc.frequency.setValueAtTime(70, t);
-    osc.frequency.linearRampToValueAtTime(120, t + 0.35);
-    osc.frequency.linearRampToValueAtTime(80, t + 0.9);
-    lowpass.type = 'lowpass';
-    lowpass.frequency.value = 380;
-    gain.gain.setValueAtTime(0, t);
-    gain.gain.linearRampToValueAtTime(0.18, t + 0.05);
-    gain.gain.linearRampToValueAtTime(0, t + 0.95);
-    osc.connect(lowpass).connect(gain).connect(audioCtx.destination);
-    osc.start(t);
-    osc.stop(t + 1);
-  } catch (e) { /* sem áudio: segue sem som */ }
-}
 
 /** Lê, do HTML, as fotos da galeria ligada à aba (data-gallery). */
 function readGallery(tab) {
@@ -922,16 +944,134 @@ photo.print.addEventListener('keydown', e => {
   openPhotoLightbox();
 });
 
-// Transição 5 ↔ 6 (fade) — a câmera imprime a primeira foto ao entrar
+
+/* ============ 12. TRANSIÇÕES 4 → 5 · 5 → 6 · 6 → 7 E SLIDE 7 ============ */
+
+/** Camada de efeitos por cima do palco. */
+function makeFx(extra = '') {
+  const el = document.createElement('div');
+  el.className = 'fx-layer ' + extra;
+  stage.appendChild(el);
+  return el;
+}
+
+/** Troca de slide sem fade (o efeito por cima esconde o corte). */
+function cutSwap(from, to) {
+  [from, to].forEach(s => (s.style.transition = 'none'));
+  swapActive(from, to);
+  void to.offsetWidth;
+  [from, to].forEach(s => (s.style.transition = ''));
+}
+
+/** Tremor que vai diminuindo. */
+function shakeStage(ms = 900, amp = 16) {
+  const n = 12, frames = [{ transform: 'translate(0,0)' }];
+  for (let i = 1; i < n; i++) {
+    const k = amp * (1 - i / n);
+    frames.push({ transform: `translate(${(Math.random() - 0.5) * 2 * k}px, ${(Math.random() - 0.5) * 2 * k}px)` });
+  }
+  frames.push({ transform: 'translate(0,0)' });
+  stage.animate(frames, { duration: ms });
+}
+
+/* --- 4 → 5 · EXPLOSÃO (carro-bomba) --- */
+function toSlide5() {
+  if (state.busy || state.slide !== 4 || !slide5) return;
+  lock();
+  bombSound();
+
+  const fx = makeFx();
+  fx.innerHTML = '<div class="fx-boom-glow"></div><div class="fx-shock"></div><div class="fx-shock s2"></div><div class="fx-dust"></div><div class="fx-flash"></div>';
+  const [glow, s1, s2, dust, flash] = fx.children;
+
+  for (let i = 0; i < 30; i++) {
+    const d = document.createElement('i');
+    d.className = 'fx-debris';
+    const size = 4 + Math.random() * 14;
+    d.style.width = size + 'px';
+    d.style.height = size * (0.5 + Math.random()) + 'px';
+    fx.appendChild(d);
+    const a = Math.random() * Math.PI * 2, dist = 300 + Math.random() * 700;
+    d.animate([
+      { transform: 'translate(0,0) rotate(0deg)', opacity: 1 },
+      { transform: `translate(${Math.cos(a) * dist}px, ${Math.sin(a) * dist + 150}px) rotate(${Math.random() * 720 - 360}deg)`, opacity: 0 }
+    ], { duration: 900 + Math.random() * 700, delay: 60, easing: 'cubic-bezier(.1,.7,.3,1)', fill: 'both' });
+  }
+
+  const ring = (el, delay) => el.animate([
+    { transform: 'translate(-50%,-50%) scale(.1)', opacity: 0.95 },
+    { transform: 'translate(-50%,-50%) scale(9)', opacity: 0 }
+  ], { duration: 1100, delay, easing: 'cubic-bezier(.1,.6,.3,1)' });
+  ring(s1, 0); ring(s2, 140);
+
+  glow.animate([{ opacity: 0 }, { opacity: 1, offset: .1 }, { opacity: 0 }], { duration: 1000 });
+  flash.animate([{ opacity: 0 }, { opacity: 1, offset: .08 }, { opacity: 1, offset: .25 }, { opacity: 0 }], { duration: 1300, easing: 'ease-out' });
+  dust.animate([{ opacity: 0 }, { opacity: .85, offset: .25 }, { opacity: 0 }], { duration: 1900 });
+
+  shakeStage(1000, 22);
+  setTimeout(() => cutSwap(slide4, slide5), 140);   // corte escondido pelo clarão
+  setTimeout(() => { fx.remove(); unlock(5); }, 1900);
+}
+
+function backFromSlide5() {
+  if (state.busy || state.slide !== 5) return;
+  lock();
+  pauseMusic();
+  swapActive(slide5, slide4);
+  setTimeout(() => unlock(4), 650);
+}
+
+/* --- 5 → 6 · CADERNO QUEIMANDO (queima de arquivo) --- */
 function toSlide6() {
   if (state.busy || state.slide !== 5 || !slide6) return;
   lock();
   pauseMusic();
-  swapActive(slide5, slide6);
-  setTimeout(() => {
+  fireSound();
+
+  // filtro que deixa a borda do fogo irregular
+  const svg = document.createElementNS(SVG_NS, 'svg');
+  svg.setAttribute('width', '0'); svg.setAttribute('height', '0');
+  svg.style.position = 'fixed';
+  svg.innerHTML = `<filter id="burnWarp" x="-5%" y="-5%" width="110%" height="110%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.012 0.02" numOctaves="2" seed="3" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="40" xChannelSelector="R" yChannelSelector="G"/></filter>`;
+  document.body.appendChild(svg);
+
+  const fx = makeFx('fx-burn');
+  const clone = slide5.cloneNode(true);                       // mantém o id raiz (o CSS do slide depende dele)
+  clone.querySelectorAll('[id]').forEach(n => n.removeAttribute('id'));
+  clone.classList.add('burning');
+  clone.setAttribute('aria-hidden', 'true');
+  const fire = document.createElement('div');
+  fire.className = 'fx-fire';
+  fx.append(clone, fire);
+
+  cutSwap(slide5, slide6);   // o slide 6 já está por baixo, aparecendo conforme o papel queima
+
+  const dur = 2100, t0 = performance.now();
+  function step(now) {
+    const p = Math.min((now - t0) / dur, 1);
+    const b = -10 + 125 * Math.pow(p, 1.3);
+    fx.style.setProperty('--b', b.toFixed(2));
+
+    if (b > 0 && b < 100 && Math.random() < 0.8) {
+      const e = document.createElement('i');
+      e.className = 'fx-ember';
+      e.style.left = Math.random() * 100 + '%';
+      e.style.bottom = b + '%';
+      fx.appendChild(e);
+      e.animate([
+        { transform: 'translate(0,0)', opacity: 1 },
+        { transform: `translate(${(Math.random() - 0.5) * 120}px, ${-100 - Math.random() * 220}px)`, opacity: 0 }
+      ], { duration: 900 + Math.random() * 700, easing: 'ease-out' }).onfinish = () => e.remove();
+    }
+
+    if (p < 1) { requestAnimationFrame(step); return; }
+    fx.remove(); svg.remove();
     unlock(6);
-    printPhoto(photo.tabs[0]);
-  }, 650);
+    printPhoto(photo.tabs[0]);   // a câmera imprime a primeira foto ao entrar
+  }
+  requestAnimationFrame(step);
 }
 
 function backFromSlide6() {
@@ -940,3 +1080,64 @@ function backFromSlide6() {
   swapActive(slide6, slide5);
   setTimeout(() => unlock(5), 650);
 }
+
+/* --- 6 → 7 · CORTINA DE SANGUE --- */
+function bloodCurtainSvg() {
+  let drips = '', x = 0;
+  while (x < 100) {
+    const w = 2 + Math.random() * 5, len = 6 + Math.random() * 24;
+    drips += `<rect x="${x.toFixed(2)}" y="94" width="${w.toFixed(2)}" height="${(len + 6).toFixed(2)}" rx="${(w / 2).toFixed(2)}"/>`;
+    x += w + Math.random() * 2;
+  }
+  return `<svg viewBox="0 0 100 130" preserveAspectRatio="none">
+    <defs><linearGradient id="bloodGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#4a0000"/><stop offset=".6" stop-color="#9a0505"/><stop offset="1" stop-color="#6e0000"/>
+    </linearGradient></defs>
+    <g fill="url(#bloodGrad)"><rect x="0" y="0" width="100" height="100"/>${drips}</g></svg>`;
+}
+
+function toSlide7() {
+  if (state.busy || state.slide !== 6 || !slide7) return;
+  lock();
+  bloodSound();
+
+  const fx = makeFx();
+  const layer = document.createElement('div');
+  layer.className = 'fx-blood';
+  layer.innerHTML = bloodCurtainSvg();
+  fx.appendChild(layer);
+
+  const dur = 2500;
+  layer.animate([
+    { transform: 'translateY(-100%)', easing: 'cubic-bezier(.55,0,.9,.6)' },   // despenca
+    { transform: 'translateY(0)', offset: .4 },                                // impacto
+    { transform: 'translateY(0)', offset: .5, easing: 'cubic-bezier(.5,0,.3,1)' },
+    { transform: 'translateY(100%)' }                                          // escorre pra fora
+  ], { duration: dur, fill: 'forwards' });
+
+  setTimeout(() => { cutSwap(slide6, slide7); shakeStage(700, 12); }, dur * 0.44);
+  setTimeout(() => { fx.remove(); unlock(7); }, dur + 50);
+}
+
+function backFromSlide7() {
+  if (state.busy || state.slide !== 7) return;
+  lock();
+  swapActive(slide7, slide6);
+  setTimeout(() => unlock(6), 650);
+}
+
+
+/* ============ 13. CONTROLE DE VOLUME ============ */
+const volBtn = $('#volBtn');
+const volRange = $('#volRange');
+
+function applyVolume() {
+  if (master) master.gain.value = gainFor();
+  if (notebook.audio) notebook.audio.volume = sound.muted ? 0 : sound.volume; // a música do caderno também
+  volBtn.textContent = sound.muted || sound.volume === 0 ? '🔇' : sound.volume < 0.5 ? '🔉' : '🔊';
+  volRange.value = Math.round(sound.volume * 100);
+}
+volRange.addEventListener('input', () => { sound.volume = volRange.value / 100; sound.muted = false; applyVolume(); });
+volRange.addEventListener('change', () => volRange.blur());   // devolve as setas do teclado aos slides
+volBtn.addEventListener('click', () => { sound.muted = !sound.muted; applyVolume(); volBtn.blur(); });
+applyVolume();
